@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="Reader.PdfReaderPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Reader"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+    xmlns:controls="using:Windows.UI.Xaml.Controls"
+    xmlns:controls1="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    mc:Ignorable="d"
+    x:Name="PdfReaderPage"
+    
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition />
+        </TransitionCollection>
+    </Page.Transitions>
+    <Grid>
+
+
+        <ScrollViewer x:Name="ScrollView1" >
+            <StackPanel>
+               
+                <StackPanel  Orientation="Horizontal" VerticalAlignment="Stretch">
+                    <StackPanel Orientation="Horizontal" Margin="10, 10, 0, 0" VerticalAlignment="Stretch">
+                        <controls:ComboBox x:Name="CurrentPage"  SelectedIndex="0" SelectionChanged="SelectionChanged">
+                        </controls:ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="1180, 0, 0 ,0" HorizontalAlignment="Right">
+                        <AppBarButton Icon="Back" Label="Prev" Click="PreviousPage" HorizontalAlignment="Right" />
+                        <AppBarButton Icon="Forward" Label="Next" Click="NextPage" HorizontalAlignment="Right"/>
+                        <AppBarSeparator HorizontalAlignment="Right"/>
+                        <AppBarButton Icon="ClosePane" Label="Close" Click="CloseBook" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                    
+                </StackPanel>
+                <StackPanel>
+                    <Image x:Name="Output" Stretch="None" Margin="0,50,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
