@@ -19,7 +19,7 @@
 
     <Page.Resources>
         <DataTemplate x:Key="DetailListViewBookTemplate" x:DataType="viewmodels:BookViewModel">
-            <Grid Margin="0, 11, 0, 13" RightTapped="BookRightTapped">
+            <Grid Margin="0, 11, 0, 13" RightTapped="BookRightTapped" DoubleTapped="BookDoubleTapped">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
