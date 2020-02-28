@@ -18,7 +18,7 @@ using namespace Windows::Storage::Pickers;
 using namespace Windows::Storage::Streams;
 using namespace Windows::UI::Core;
 using namespace Windows::UI::ViewManagement;
-
+using namespace Windows::System;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Interop;
 using namespace Windows::UI::Xaml::Controls;
@@ -37,7 +37,7 @@ void Reader::PdfReaderPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::Navigat
 	auto backStack = Frame->BackStack;
 	auto backStackCount = backStack->Size;
 	pdfDocument = safe_cast<PdfDocument^>(e->Parameter);
-
+	
 	CurrentPage->Items->Clear();
 	LoadDocument();
 	ViewPage();
@@ -81,11 +81,11 @@ void Reader::PdfReaderPage::ViewPage() {
 	PdfPage^ page = pdfDocument->GetPage(m_currentPage);
 	auto stream = ref new InMemoryRandomAccessStream();
 	IAsyncAction^ renderAction;
-	/*auto options1 = ref new PdfPageRenderOptions();
+	auto options1 = ref new PdfPageRenderOptions();
 	options1->BackgroundColor = Windows::UI::Colors::Beige;
-	options1->DestinationHeight = static_cast<unsigned int>(page->Size.Height / 1.5);
-	options1->DestinationWidth = static_cast<unsigned int>(page->Size.Width / 1.5);
-	renderAction = page->RenderToStreamAsync(stream, options1);*/
+	options1->DestinationHeight = static_cast<unsigned int>(page->Size.Height / 0.8);
+	options1->DestinationWidth = static_cast<unsigned int>(page->Size.Width / 0.8);
+	renderAction = page->RenderToStreamAsync(stream, options1);
 	renderAction = page->RenderToStreamAsync(stream);
 	Output->Source = nullptr;
 	create_task(renderAction).then([this, stream]() {
@@ -99,7 +99,7 @@ void Reader::PdfReaderPage::NextPage(Platform::Object^ sender, Windows::UI::Xaml
 	if (m_currentPage < m_pageCount - 1) {
 		++m_currentPage;
 		CurrentPage->SelectedIndex = m_currentPage;
-		ViewPage();
+		//ViewPage();
 	}
 }
 
@@ -107,7 +107,7 @@ void Reader::PdfReaderPage::PreviousPage(Platform::Object^ sender, Windows::UI::
 	if (m_currentPage > 0) {
 		--m_currentPage;
 		CurrentPage->SelectedIndex = m_currentPage;
-		ViewPage();
+		//ViewPage();
 	}
 }
 
