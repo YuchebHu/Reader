@@ -40,7 +40,7 @@ void Reader::PdfReaderPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::Navigat
 	
 	CurrentPage->Items->Clear();
 	LoadDocument();
-	ViewPage();
+	//ViewPage();
 	SystemNavigationManager^ systemNavigationManager = SystemNavigationManager::GetForCurrentView();
 	m_backRequestedEventRegistrationToken =
 		systemNavigationManager->BackRequested += ref new EventHandler<BackRequestedEventArgs^>(this, &PdfReaderPage::PdfReaderPage_BackRequested);
