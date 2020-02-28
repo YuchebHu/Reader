@@ -136,7 +136,7 @@ void Reader::DetailPage::BookRightTapped(Platform::Object^ sender, Windows::UI::
 
 	FlyoutBase::SetAttachedFlyout((FrameworkElement^)sender, BookMenu);
 	FlyoutBase::ShowAttachedFlyout((FrameworkElement^)sender);
-	LoadFile();
+	//LoadFile();
 }
 
 void Reader::DetailPage::TextChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::TextChangedEventArgs^ e) {
@@ -155,8 +155,15 @@ void Reader::DetailPage::ChangeTag(Platform::Object^ sender, Windows::UI::Xaml::
 }
 
 void Reader::DetailPage::OpenFile(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e) {
-	Frame->Navigate(TypeName(PdfReaderPage::typeid), pdf, ref new DrillInNavigationTransitionInfo());
+	/*Frame->Navigate(TypeName(PdfReaderPage::typeid), pdf, ref new DrillInNavigationTransitionInfo());
+	pdf = nullptr;*/
 	pdf = nullptr;
+	auto m = concurrency::create_task(StorageFile::GetFileFromPathAsync(m_lastSelectedBook->Path)).then([this](StorageFile^ file) {
+		return concurrency::create_task(PdfDocument::LoadFromFileAsync(file));
+		}).then([this](task<Windows::Data::Pdf::PdfDocument^> t) {
+			PDF::set(t.get());
+			this->Frame->Navigate(TypeName(PdfReaderPage::typeid), pdf, ref new DrillInNavigationTransitionInfo());
+			});
 }
 
 void Reader::DetailPage::LoadFile() {
@@ -165,6 +172,12 @@ void Reader::DetailPage::LoadFile() {
 		return concurrency::create_task(PdfDocument::LoadFromFileAsync(file));
 		}).then([this](task<Windows::Data::Pdf::PdfDocument^> t) {
 			PDF::set(t.get());
+			this->Frame->Navigate(TypeName(PdfReaderPage::typeid), pdf, ref new DrillInNavigationTransitionInfo());
+			PDF::set(nullptr);
 			});
 }
 
+void Reader::DetailPage::BookDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e) {
+	m_lastSelectedBook = safe_cast<BookViewModel^>(safe_cast<TextBlock^>(e->OriginalSource)->DataContext);
+	OpenFile(sender, e);
+}
