@@ -69,5 +69,6 @@ namespace Reader {
 
 		void LoadFile();
 	
+		void BookDoubleTapped(Platform::Object^ sender, Windows::UI::Xaml::Input::DoubleTappedRoutedEventArgs^ e);
 	};
 }
